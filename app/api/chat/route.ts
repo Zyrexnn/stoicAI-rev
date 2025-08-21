@@ -3,18 +3,14 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-// Mengakses API Key dari variabel lingkungan
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GOOGLE_AI_API_KEY as string);
 
 export async function POST(req: Request) {
   try {
-    // Memberikan tipe yang lebih spesifik untuk data dari request
-    const { message, image }: { message: string; image: string } = await req.json();
+    const { message, image }: { message: string, image: string } = await req.json();
 
-    // Menggunakan model yang mendukung input teks dan gambar
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     
-    // Inisialisasi chat dengan riwayat statis
     const chat = model.startChat({
       history: [
         {
@@ -40,7 +36,6 @@ export async function POST(req: Request) {
       ],
     });
 
-    // Siapkan array parts untuk prompt pengguna saat ini
     const parts = [];
     if (message) {
       parts.push({ text: message });
@@ -57,17 +52,16 @@ export async function POST(req: Request) {
       parts.push(imagePart);
     }
     
-    // Kirim prompt ke model AI
     const result = await chat.sendMessage(parts);
     const responseText = result.response.text();
 
     return NextResponse.json({ text: responseText, success: true });
 
-  } catch (error: any) {
+  } catch (error) {
     console.error('API Error:', error);
     return NextResponse.json({ 
       message: 'Error processing request.', 
-      details: error.message 
+      details: (error as Error).message 
     }, { status: 500 });
   }
 }
