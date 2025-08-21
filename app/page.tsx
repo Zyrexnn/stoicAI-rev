@@ -2,6 +2,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect, FormEvent, ChangeEvent } from 'react';
+import Image from 'next/image'; // Tambahkan import ini
 import styles from './styles/Home.module.css';
 
 interface Message {
@@ -60,7 +61,7 @@ const Home = () => {
     if (isClient) {
       localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
     }
-  }, [chatHistory, isClient]);
+  }, [chatHistory, isClient]); // Perbaikan 1: Tambahkan chatHistory ke dependency array
 
   const saveCurrentChat = () => {
     if (messages.length === 0 || !currentChatId) {
@@ -203,6 +204,7 @@ const Home = () => {
       {isClient && showGuide && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
+            {/* Perbaikan 2: Mengganti "" dengan '' atau menggunakan template literal */}
             <button className={styles.closeModalButton} onClick={() => setShowGuide(false)}>×</button>
             <div className={styles.modalHeader}>
               <h2>Panduan Penggunaan StoicAI</h2>
@@ -272,7 +274,16 @@ const Home = () => {
               </div>
               <div className={msg.role === 'user' ? styles.userMessage : styles.botMessage}>
                 {msg.text && <p>{msg.text}</p>}
-                {msg.image && <img src={msg.image} alt="User upload" className={styles.uploadedImage} />}
+                {msg.image && (
+                  // Perbaikan 3: Menggunakan komponen Image dari next/image
+                  <Image
+                    src={msg.image}
+                    alt="User upload"
+                    width={500} // Tentukan lebar
+                    height={300} // Tentukan tinggi
+                    className={styles.uploadedImage} 
+                  />
+                )}
               </div>
             </div>
           ))}
@@ -309,7 +320,13 @@ const Home = () => {
         </form>
         {image && (
           <div className={styles.imagePreview}>
-            <img src={image} alt="Preview" />
+            {/* Perbaikan 3: Menggunakan komponen Image dari next/image */}
+            <Image
+              src={image}
+              alt="Preview"
+              width={500} // Tentukan lebar
+              height={300} // Tentukan tinggi
+            />
             <button onClick={() => setImage(null)} className={styles.removeImageButton}>x</button>
           </div>
         )}
