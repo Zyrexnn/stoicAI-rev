@@ -1,8 +1,8 @@
 // File: app/page.tsx
 'use client';
 
-import React, { useState, useRef, useEffect, FormEvent, ChangeEvent, useCallback } from 'react';
-import Image from 'next/image';
+import React, { useState, useRef, useEffect, FormEvent, ChangeEvent } from 'react';
+import Image from 'next/image'; // Tambahkan import ini
 import styles from './styles/Home.module.css';
 
 interface Message {
@@ -34,42 +34,6 @@ const Home = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
 
-  // Pindahkan saveCurrentChat ke atas newChat dan bungkus dengan useCallback
-  const saveCurrentChat = useCallback(() => {
-    if (messages.length === 0 || !currentChatId) {
-      return;
-    }
-
-    const chatTitle = messages[0]?.text?.substring(0, 30) || 'Obrolan Baru';
-    const existingChatIndex = chatHistory.findIndex(chat => chat.id === currentChatId);
-
-    const newSession: ChatSession = {
-      id: currentChatId,
-      title: chatTitle,
-      messages,
-    };
-
-    if (existingChatIndex !== -1) {
-      const updatedHistory = [...chatHistory];
-      updatedHistory[existingChatIndex] = newSession;
-      setChatHistory(updatedHistory);
-    } else {
-      setChatHistory([newSession, ...chatHistory]);
-    }
-  }, [messages, currentChatId, chatHistory]);
-
-  const newChat = useCallback((isInitialLoad = false) => {
-    if (!isInitialLoad) {
-      saveCurrentChat();
-    }
-    const newId = `chat-${Date.now()}`;
-    setMessages([]);
-    setCurrentChatId(newId);
-    setInput('');
-    setImage(null);
-    setIsHistoryOpen(false);
-  }, [saveCurrentChat]);
-
   useEffect(() => {
     setIsClient(true);
     const savedHistory = localStorage.getItem('chatHistory');
@@ -91,13 +55,48 @@ const Home = () => {
       setShowGuide(true);
       localStorage.setItem('hasShownGuide', 'true');
     }
-  }, [newChat]);
+  }, []);
 
   useEffect(() => {
     if (isClient) {
       localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
     }
-  }, [chatHistory, isClient]);
+  }, [chatHistory, isClient]); // Perbaikan 1: Tambahkan chatHistory ke dependency array
+
+  const saveCurrentChat = () => {
+    if (messages.length === 0 || !currentChatId) {
+      return;
+    }
+
+    const chatTitle = messages[0]?.text?.substring(0, 30) || 'Obrolan Baru';
+    const existingChatIndex = chatHistory.findIndex(chat => chat.id === currentChatId);
+
+    const newSession: ChatSession = {
+      id: currentChatId,
+      title: chatTitle,
+      messages,
+    };
+
+    if (existingChatIndex !== -1) {
+      const updatedHistory = [...chatHistory];
+      updatedHistory[existingChatIndex] = newSession;
+      setChatHistory(updatedHistory);
+    } else {
+      setChatHistory([newSession, ...chatHistory]);
+    }
+  };
+
+  const newChat = (isInitialLoad = false) => {
+    if (!isInitialLoad) {
+      saveCurrentChat();
+    }
+    const newId = `chat-${Date.now()}`;
+    setMessages([]);
+    setCurrentChatId(newId);
+    setInput('');
+    setImage(null);
+    setIsHistoryOpen(false);
+  };
 
   const loadChat = (chat: ChatSession) => {
     saveCurrentChat();
@@ -205,23 +204,23 @@ const Home = () => {
       {isClient && showGuide && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
+            {/* Perbaikan 2: Mengganti "" dengan '' atau menggunakan template literal */}
             <button className={styles.closeModalButton} onClick={() => setShowGuide(false)}>×</button>
             <div className={styles.modalHeader}>
               <h2>Panduan Penggunaan StoicAI</h2>
             </div>
             <div className={styles.modalBody}>
-              {/* Perbaikan: Mengganti tanda kutip ganda menjadi markdown yang benar */}
-              <p>Selamat datang di <b>StoicAI</b>, asisten AI yang dirancang khusus untuk membantu Anda memahami dan menerapkan filosofi Stoa.</p>
+              <p>Selamat datang di **StoicAI**, asisten AI yang dirancang khusus untuk membantu Anda memahami dan menerapkan filosofi Stoa.</p>
               <h3>Fitur Utama:</h3>
               <ul>
                 <li>
-                  <b>Riwayat Obrolan</b>: Semua percakapan Anda akan disimpan secara otomatis. Anda dapat melihat, memuat ulang, atau menghapus sesi obrolan lama melalui panel Riwayat Obrolan di sisi kiri (desktop) atau tombol menu (mobile).
+                  **Riwayat Obrolan**: Semua percakapan Anda akan disimpan secara otomatis. Anda dapat melihat, memuat ulang, atau menghapus sesi obrolan lama melalui panel Riwayat Obrolan di sisi kiri (desktop) atau tombol menu (mobile).
                 </li>
                 <li>
-                  <b>Analisis Gambar</b>: Anda bisa mengunggah gambar dengan mengklik ikon kamera. AI akan menganalisis gambar dan mengaitkannya dengan topik filsafat Stoa.
+                  **Analisis Gambar**: Anda bisa mengunggah gambar dengan mengklik ikon kamera. AI akan menganalisis gambar dan mengaitkannya dengan topik filsafat Stoa.
                 </li>
                 <li>
-                  <b>Sistem Cooldown</b>: Untuk menjaga performa, terdapat batasan penggunaan. Anda dapat mengirim prompt setiap 5 detik. Setelah 10 prompt, akan ada jeda 1 menit.
+                  **Sistem Cooldown**: Untuk menjaga performa, terdapat batasan penggunaan. Anda dapat mengirim prompt setiap 5 detik. Setelah 10 prompt, akan ada jeda 1 menit.
                 </li>
               </ul>
               <h3>Tips Berinteraksi:</h3>
@@ -276,11 +275,12 @@ const Home = () => {
               <div className={msg.role === 'user' ? styles.userMessage : styles.botMessage}>
                 {msg.text && <p>{msg.text}</p>}
                 {msg.image && (
+                  // Perbaikan 3: Menggunakan komponen Image dari next/image
                   <Image
                     src={msg.image}
                     alt="User upload"
-                    width={500}
-                    height={300}
+                    width={500} // Tentukan lebar
+                    height={300} // Tentukan tinggi
                     className={styles.uploadedImage} 
                   />
                 )}
@@ -320,11 +320,12 @@ const Home = () => {
         </form>
         {image && (
           <div className={styles.imagePreview}>
+            {/* Perbaikan 3: Menggunakan komponen Image dari next/image */}
             <Image
               src={image}
               alt="Preview"
-              width={500}
-              height={300}
+              width={500} // Tentukan lebar
+              height={300} // Tentukan tinggi
             />
             <button onClick={() => setImage(null)} className={styles.removeImageButton}>x</button>
           </div>
