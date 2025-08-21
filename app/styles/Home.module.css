@@ -136,19 +136,26 @@
   z-index: 10;
   background-color: rgba(14, 19, 32, 0.8);
   backdrop-filter: blur(8px);
-  padding: 1rem 0; /* Mengurangi padding */
+  padding: 1rem 0;
   text-align: center;
+}
+
+.headerButtons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 0.5rem;
 }
 
 .title {
   font-family: var(--font-playfair);
   font-size: 3rem;
   color: var(--primary-color);
-  margin-bottom: 0.5rem; /* Mengurangi jarak di bawah judul */
+  margin-bottom: 0.5rem;
 }
 
 .description {
-  margin-bottom: 1rem; /* Mengurangi jarak di bawah deskripsi */
+  margin-bottom: 1rem;
 }
 
 .guideButton {
@@ -160,7 +167,7 @@
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
-  margin-bottom: 0; /* Menghilangkan margin bawah */
+  margin-bottom: 0;
 }
 
 .guideButton:hover {
