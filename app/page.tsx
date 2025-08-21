@@ -210,17 +210,18 @@ const Home = () => {
               <h2>Panduan Penggunaan StoicAI</h2>
             </div>
             <div className={styles.modalBody}>
+              {/* Perbaikan: Mengganti tanda kutip ganda menjadi markdown yang benar */}
               <p>Selamat datang di <b>StoicAI</b>, asisten AI yang dirancang khusus untuk membantu Anda memahami dan menerapkan filosofi Stoa.</p>
               <h3>Fitur Utama:</h3>
               <ul>
                 <li>
-                  **Riwayat Obrolan**: Semua percakapan Anda akan disimpan secara otomatis. Anda dapat melihat, memuat ulang, atau menghapus sesi obrolan lama melalui panel Riwayat Obrolan di sisi kiri (desktop) atau tombol menu (mobile).
+                  <b>Riwayat Obrolan</b>: Semua percakapan Anda akan disimpan secara otomatis. Anda dapat melihat, memuat ulang, atau menghapus sesi obrolan lama melalui panel Riwayat Obrolan di sisi kiri (desktop) atau tombol menu (mobile).
                 </li>
                 <li>
-                  **Analisis Gambar**: Anda bisa mengunggah gambar dengan mengklik ikon kamera. AI akan menganalisis gambar dan mengaitkannya dengan topik filsafat Stoa.
+                  <b>Analisis Gambar</b>: Anda bisa mengunggah gambar dengan mengklik ikon kamera. AI akan menganalisis gambar dan mengaitkannya dengan topik filsafat Stoa.
                 </li>
                 <li>
-                  **Sistem Cooldown**: Untuk menjaga performa, terdapat batasan penggunaan. Anda dapat mengirim prompt setiap 5 detik. Setelah 10 prompt, akan ada jeda 1 menit.
+                  <b>Sistem Cooldown</b>: Untuk menjaga performa, terdapat batasan penggunaan. Anda dapat mengirim prompt setiap 5 detik. Setelah 10 prompt, akan ada jeda 1 menit.
                 </li>
               </ul>
               <h3>Tips Berinteraksi:</h3>

@@ -62,7 +62,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ text: responseText, success: true });
 
-  } catch (error) {
+  } catch (error) { // Perbaikan: Menghilangkan `: any`
     console.error('API Error:', error);
     return NextResponse.json({ 
       message: 'Error processing request.', 
