@@ -1,0 +1,31 @@
+:root {
+  --font-inter: 'Inter', sans-serif;
+  --font-playfair: 'Playfair Display', serif;
+  --background-color: #0b0f16;
+  --text-color: #e4e6eb;
+  --surface-color: #0e1320;
+  --primary-color: #f1c376;
+  --secondary-color: #21283d;
+  --user-message-bg: linear-gradient(135deg, #f1c376, #b8860b);
+  --muted: #a0a0a0;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: var(--font-inter);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
