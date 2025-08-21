@@ -34,7 +34,7 @@ const Home = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
 
-  // Fungsi saveCurrentChat didefinisikan di atas newChat
+  // Pindahkan saveCurrentChat ke atas newChat dan bungkus dengan useCallback
   const saveCurrentChat = useCallback(() => {
     if (messages.length === 0 || !currentChatId) {
       return;
